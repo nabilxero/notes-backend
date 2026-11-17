@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { healthRouter } from "./routes/health";
+import { authRouter } from "./routes/auth";
 import { errorHandler, notFound } from "./middleware/error";
 
 // App is built separately from server start-up so tests can import it
@@ -13,6 +14,7 @@ export function createApp(corsOrigin: string) {
   app.use(express.json());
 
   app.use("/api", healthRouter);
+  app.use("/api", authRouter);
 
   app.use(notFound);
   app.use(errorHandler);
