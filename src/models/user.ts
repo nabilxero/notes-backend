@@ -1,4 +1,5 @@
 import { Schema, model, type InferSchemaType } from "mongoose";
+import { toJSONOptions } from "./toJSON";
 
 export const ROLES = ["user", "admin"] as const;
 export type Role = (typeof ROLES)[number];
@@ -13,16 +14,8 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
-    // Shape of every user returned by the API: id instead of _id, no internals, no hash.
-    toJSON: {
-      transform(_doc, ret: Record<string, unknown>) {
-        ret.id = String(ret._id);
-        delete ret._id;
-        delete ret.__v;
-        delete ret.passwordHash;
-        return ret;
-      },
-    },
+    // Never serialise the hash, even if it was explicitly selected.
+    toJSON: toJSONOptions(["passwordHash"]),
   },
 );
 
