@@ -4,6 +4,7 @@ import helmet from "helmet";
 import { healthRouter } from "./routes/health";
 import { authRouter } from "./routes/auth";
 import { notesRouter } from "./routes/notes";
+import { adminRouter } from "./routes/admin";
 import { errorHandler, notFound } from "./middleware/error";
 
 // App is built separately from server start-up so tests can import it
@@ -17,6 +18,7 @@ export function createApp(corsOrigin: string) {
   app.use("/api", healthRouter);
   app.use("/api", authRouter);
   app.use("/api", notesRouter);
+  app.use("/api", adminRouter);
 
   app.use(notFound);
   app.use(errorHandler);
